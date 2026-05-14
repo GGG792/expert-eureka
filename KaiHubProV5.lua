@@ -664,7 +664,7 @@ local function CreateGUI()
                     BV = Instance.new("BodyVelocity")
                     BG = Instance.new("BodyGyro")
                     BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-                    BG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+                    BG.MaxForce = Vector3.new(9e9, 9e9, 9e9)
                     BV.Parent = RootPart
                     BG.Parent = RootPart
                     BG.CFrame = RootPart.CFrame
