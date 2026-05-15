@@ -23,6 +23,7 @@ import {
 const SettingsPage: React.FC = () => {
   const { settings, updateSettings } = useAppStore();
   const [activeSection, setActiveSection] = React.useState('通用设置');
+  const [selectedTheme, setSelectedTheme] = React.useState('purple');
 
   const sections = [
     { id: '通用设置', icon: SettingsIcon, label: '通用设置' },
@@ -145,25 +146,65 @@ const SettingsPage: React.FC = () => {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                      { name: '深色模式', color: 'from-gray-900 to-black' },
-                      { name: '紫色主题', color: 'from-purple-900 to-violet-900' },
-                      { name: '蓝色主题', color: 'from-blue-900 to-indigo-900' },
-                      { name: '绿色主题', color: 'from-green-900 to-emerald-900' },
+                      { id: 'dark', name: '深色模式', color: 'from-gray-900 to-black', gradient: 'from-gray-600 to-gray-800' },
+                      { id: 'purple', name: '紫色主题', color: 'from-purple-900 to-violet-900', gradient: 'from-purple-600 to-violet-600' },
+                      { id: 'blue', name: '蓝色主题', color: 'from-blue-900 to-indigo-900', gradient: 'from-blue-600 to-blue-800' },
+                      { id: 'green', name: '绿色主题', color: 'from-green-900 to-emerald-900', gradient: 'from-green-600 to-emerald-600' },
                     ].map((theme, idx) => (
                       <button
                         key={idx}
+                        onClick={() => {
+                          setSelectedTheme(theme.id);
+                          document.documentElement.style.setProperty('--primary-color', theme.id === 'purple' ? '138, 43, 226' : theme.id === 'blue' ? '59, 130, 246' : theme.id === 'green' ? '34, 197, 94' : '75, 85, 99');
+                        }}
                         className={`p-4 rounded-xl border-2 transition-all transform hover:scale-110 hover:shadow-lg ${
-                          idx === 1
-                            ? 'border-purple-500 shadow-purple-500/40'
+                          selectedTheme === theme.id
+                            ? 'border-white shadow-lg'
                             : 'border-purple-500/30 hover:border-purple-500/60'
                         }`}
                       >
                         <div
-                          className={`w-full h-20 rounded-lg bg-gradient-to-br ${theme.color} mb-3`}
-                        />
+                          className={`w-full h-20 rounded-lg bg-gradient-to-br ${theme.color} mb-3 flex items-center justify-center`}
+                        >
+                          {selectedTheme === theme.id && (
+                            <div className={`w-10 h-10 bg-gradient-to-br ${theme.gradient} rounded-full flex items-center justify-center`}>
+                              <Sparkles className="w-5 h-5 text-white animate-pulse" />
+                            </div>
+                          )}
+                        </div>
                         <span className="text-white text-sm font-medium">{theme.name}</span>
                       </button>
                     ))}
+                  </div>
+
+                  <div className="p-6 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h4 className="text-white font-bold mb-4">自定义颜色</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-purple-300 text-sm mb-2 block">主色调</label>
+                        <input
+                          type="color"
+                          defaultValue="#8a2be2"
+                          className="w-full h-12 rounded-lg cursor-pointer bg-transparent border border-purple-500/30"
+                          onChange={(e) => {
+                            const color = e.target.value;
+                            document.documentElement.style.setProperty('--primary-color', color);
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-purple-300 text-sm mb-2 block">强调色</label>
+                        <input
+                          type="color"
+                          defaultValue="#c864ff"
+                          className="w-full h-12 rounded-lg cursor-pointer bg-transparent border border-purple-500/30"
+                          onChange={(e) => {
+                            const color = e.target.value;
+                            document.documentElement.style.setProperty('--accent-color', color);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
