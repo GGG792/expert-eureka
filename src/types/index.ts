@@ -24,4 +24,4 @@ export interface LogEntry {
   timestamp: Date;
 }
 
-export type Page = 'home' | 'editor' | 'scripts' | 'settings';
+export type Page = 'home' | 'editor' | 'scripts' | 'settings' | 'games' | 'about' | 'community' | 'downloads' | 'starred' | 'shortcuts' | 'help' | 'features' | 'telegram';

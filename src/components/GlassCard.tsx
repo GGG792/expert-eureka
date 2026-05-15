@@ -10,12 +10,14 @@ interface GlassCardProps {
   children: React.ReactNode;
   className?: string;
   gradient?: boolean;
+  style?: React.CSSProperties;
 }
 
 const GlassCard: React.FC<GlassCardProps> = ({
   children,
   className,
   gradient = false,
+  style,
 }) => {
   return (
     <div
@@ -25,6 +27,7 @@ const GlassCard: React.FC<GlassCardProps> = ({
           'before:absolute before:inset-0 before:bg-gradient-to-br before:from-purple-600/20 before:to-violet-900/20 before:pointer-events-none',
         className
       )}
+      style={style}
     >
       {children}
     </div>

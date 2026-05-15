@@ -9,19 +9,8 @@ import SettingsPage from '@/pages/Settings';
 export default function App() {
   const { currentPage } = useAppStore();
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'editor':
-        return <Editor />;
-      case 'scripts':
-        return <Scripts />;
-      case 'settings':
-        return <SettingsPage />;
-      default:
-        return <Home />;
-    }
-  };
-
+  // 所有页面都通过 Home 组件处理，Home 内部有自己的标签页系统
+  // 或者我们把所有标签整合到 Home 组件里
   return (
     <div className="min-h-screen bg-black">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -33,7 +22,7 @@ export default function App() {
       <Navbar />
 
       <main className="pt-20 relative z-10">
-        {renderPage()}
+        <Home />
       </main>
 
       <BottomNav />
