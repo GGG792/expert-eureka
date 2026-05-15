@@ -18,12 +18,42 @@ import {
   Zap,
   Heart,
   ExternalLink,
+  Save,
+  Trash2,
+  Wifi,
+  Server,
+  Activity,
+  Terminal,
+  Moon,
+  Sun,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
 
 const SettingsPage: React.FC = () => {
   const { settings, updateSettings } = useAppStore();
   const [activeSection, setActiveSection] = React.useState('通用设置');
   const [selectedTheme, setSelectedTheme] = React.useState('purple');
+  const [username, setUsername] = React.useState('Kai User');
+  const [email, setEmail] = React.useState('user@kaihub.com');
+  const [notificationSettings, setNotificationSettings] = React.useState({
+    updates: true,
+    news: true,
+    security: true,
+    community: false,
+  });
+  const [performanceSettings, setPerformanceSettings] = React.useState({
+    lowPowerMode: false,
+    autoOptimization: true,
+    cacheSize: '500MB',
+    backgroundUpdate: true,
+  });
+  const [networkSettings, setNetworkSettings] = React.useState({
+    autoConnect: true,
+    proxy: false,
+    proxyAddress: '',
+    dns: '自动',
+  });
 
   const sections = [
     { id: '通用设置', icon: SettingsIcon, label: '通用设置' },
@@ -35,6 +65,15 @@ const SettingsPage: React.FC = () => {
     { id: '性能设置', icon: Cpu, label: '性能设置' },
     { id: '网络设置', icon: Globe, label: '网络设置' },
     { id: '帮助支持', icon: HelpCircle, label: '帮助支持' },
+  ];
+
+  const shortcuts = [
+    { key: 'F5', action: '执行脚本' },
+    { key: 'Ctrl+S', action: '保存脚本' },
+    { key: 'Ctrl+N', action: '新建脚本' },
+    { key: 'Ctrl+F', action: '搜索脚本' },
+    { key: 'Ctrl+K', action: '快速命令' },
+    { key: 'ESC', action: '关闭面板' },
   ];
 
   return (
@@ -116,6 +155,18 @@ const SettingsPage: React.FC = () => {
                       className="w-full h-2 bg-black/30 rounded-lg appearance-none cursor-pointer accent-purple-500"
                     />
                   </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-white font-medium">语言设置</h3>
+                        <p className="text-purple-300 text-sm">选择界面显示语言</p>
+                      </div>
+                      <select className="bg-black/30 border border-purple-500/30 rounded-lg px-4 py-2 text-white">
+                        <option>简体中文</option>
+                        <option>English</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -139,6 +190,122 @@ const SettingsPage: React.FC = () => {
                     checked={true}
                     onChange={() => {}}
                   />
+                  <div className="p-4 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h3 className="text-white font-medium mb-4">安全状态</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300">防护等级</span>
+                        <span className="text-green-400 font-medium flex items-center gap-2">
+                          <CheckCircle2 size={16} /> 高
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300">上次扫描</span>
+                        <span className="text-white">刚刚</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300">威胁拦截</span>
+                        <span className="text-white">0 次</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === '账号管理' && (
+                <div className="space-y-6">
+                  <div className="flex items-center gap-6 p-6 bg-black/20 rounded-xl border border-purple-500/20">
+                    <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-violet-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                      {username.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="bg-transparent border-b border-purple-500/30 text-white text-xl font-medium focus:outline-none focus:border-purple-500 w-full"
+                      />
+                      <p className="text-purple-400 text-sm mt-2">Kai Hub Pro 用户</p>
+                    </div>
+                    <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-violet-600 rounded-lg text-white font-medium hover:scale-105 transition-transform">
+                      更换头像
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-purple-300 text-sm mb-2 block">邮箱地址</label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full bg-black/30 border border-purple-500/30 rounded-lg px-4 py-3 text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-purple-300 text-sm mb-2 block">修改密码</label>
+                      <input
+                        type="password"
+                        placeholder="••••••••"
+                        className="w-full bg-black/30 border border-purple-500/30 rounded-lg px-4 py-3 text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-violet-600 rounded-xl text-white font-medium hover:scale-105 transition-transform">
+                      <Save size={18} />
+                      保存更改
+                    </button>
+                    <button className="flex items-center gap-2 px-6 py-3 bg-red-600/20 border border-red-500/30 rounded-xl text-red-400 font-medium hover:bg-red-600/30 transition-colors">
+                      <Trash2 size={18} />
+                      删除账号
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === '通知设置' && (
+                <div className="space-y-6">
+                  <SettingItem
+                    title="更新通知"
+                    description="收到 Kai Hub 更新时通知"
+                    checked={notificationSettings.updates}
+                    onChange={(checked) => setNotificationSettings({ ...notificationSettings, updates: checked })}
+                  />
+                  <SettingItem
+                    title="新闻公告"
+                    description="接收重要公告和活动通知"
+                    checked={notificationSettings.news}
+                    onChange={(checked) => setNotificationSettings({ ...notificationSettings, news: checked })}
+                  />
+                  <SettingItem
+                    title="安全提醒"
+                    description="账号安全相关通知"
+                    checked={notificationSettings.security}
+                    onChange={(checked) => setNotificationSettings({ ...notificationSettings, security: checked })}
+                  />
+                  <SettingItem
+                    title="社区消息"
+                    description="社区互动和消息通知"
+                    checked={notificationSettings.community}
+                    onChange={(checked) => setNotificationSettings({ ...notificationSettings, community: checked })}
+                  />
+                  <div className="p-4 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h3 className="text-white font-medium mb-4">通知历史</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-3 p-3 bg-black/30 rounded-lg">
+                        <CheckCircle2 className="text-green-400 w-5 h-5" />
+                        <span className="text-white">Kai Hub Pro V5.1 已发布！</span>
+                        <span className="text-purple-400 ml-auto text-xs">2 小时前</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-black/30 rounded-lg">
+                        <Shield className="text-blue-400 w-5 h-5" />
+                        <span className="text-white">安全扫描已完成</span>
+                        <span className="text-purple-400 ml-auto text-xs">5 小时前</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -146,35 +313,39 @@ const SettingsPage: React.FC = () => {
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                      { id: 'dark', name: '深色模式', color: 'from-gray-900 to-black', gradient: 'from-gray-600 to-gray-800' },
-                      { id: 'purple', name: '紫色主题', color: 'from-purple-900 to-violet-900', gradient: 'from-purple-600 to-violet-600' },
-                      { id: 'blue', name: '蓝色主题', color: 'from-blue-900 to-indigo-900', gradient: 'from-blue-600 to-blue-800' },
-                      { id: 'green', name: '绿色主题', color: 'from-green-900 to-emerald-900', gradient: 'from-green-600 to-emerald-600' },
-                    ].map((theme, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setSelectedTheme(theme.id);
-                          document.documentElement.style.setProperty('--primary-color', theme.id === 'purple' ? '138, 43, 226' : theme.id === 'blue' ? '59, 130, 246' : theme.id === 'green' ? '34, 197, 94' : '75, 85, 99');
-                        }}
-                        className={`p-4 rounded-xl border-2 transition-all transform hover:scale-110 hover:shadow-lg ${
-                          selectedTheme === theme.id
-                            ? 'border-white shadow-lg'
-                            : 'border-purple-500/30 hover:border-purple-500/60'
-                        }`}
-                      >
-                        <div
-                          className={`w-full h-20 rounded-lg bg-gradient-to-br ${theme.color} mb-3 flex items-center justify-center`}
+                      { id: 'dark', name: '深色模式', color: 'from-gray-900 to-black', gradient: 'from-gray-600 to-gray-800', icon: Moon },
+                      { id: 'purple', name: '紫色主题', color: 'from-purple-900 to-violet-900', gradient: 'from-purple-600 to-violet-600', icon: Sparkles },
+                      { id: 'blue', name: '蓝色主题', color: 'from-blue-900 to-indigo-900', gradient: 'from-blue-600 to-blue-800', icon: Globe },
+                      { id: 'green', name: '绿色主题', color: 'from-green-900 to-emerald-900', gradient: 'from-green-600 to-emerald-600', icon: Zap },
+                    ].map((theme, idx) => {
+                      const ThemeIcon = theme.icon;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedTheme(theme.id);
+                          }}
+                          className={`p-4 rounded-xl border-2 transition-all transform hover:scale-110 hover:shadow-lg ${
+                            selectedTheme === theme.id
+                              ? 'border-white shadow-lg'
+                              : 'border-purple-500/30 hover:border-purple-500/60'
+                          }`}
                         >
-                          {selectedTheme === theme.id && (
-                            <div className={`w-10 h-10 bg-gradient-to-br ${theme.gradient} rounded-full flex items-center justify-center`}>
-                              <Sparkles className="w-5 h-5 text-white animate-pulse" />
-                            </div>
-                          )}
-                        </div>
-                        <span className="text-white text-sm font-medium">{theme.name}</span>
-                      </button>
-                    ))}
+                          <div
+                            className={`w-full h-20 rounded-lg bg-gradient-to-br ${theme.color} mb-3 flex items-center justify-center relative overflow-hidden`}
+                          >
+                            {selectedTheme === theme.id ? (
+                              <div className={`w-10 h-10 bg-gradient-to-br ${theme.gradient} rounded-full flex items-center justify-center animate-pulse`}>
+                                <CheckCircle2 className="w-6 h-6 text-white" />
+                              </div>
+                            ) : (
+                              <ThemeIcon className="w-8 h-8 text-white/50" />
+                            )}
+                          </div>
+                          <span className="text-white text-sm font-medium">{theme.name}</span>
+                        </button>
+                      );
+                    })}
                   </div>
 
                   <div className="p-6 bg-black/20 rounded-xl border border-purple-500/20">
@@ -203,6 +374,169 @@ const SettingsPage: React.FC = () => {
                             document.documentElement.style.setProperty('--accent-color', color);
                           }}
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === '快捷键' && (
+                <div className="space-y-6">
+                  <p className="text-purple-300 mb-4">常用快捷键列表，您可以使用这些快捷操作提高效率</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {shortcuts.map((shortcut, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-purple-500/20 hover:border-purple-500/50 transition-all">
+                        <span className="text-white">{shortcut.action}</span>
+                        <kbd className="px-3 py-1 bg-gradient-to-r from-purple-600 to-violet-600 rounded-lg text-white font-mono text-sm shadow-lg">
+                          {shortcut.key}
+                        </kbd>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-4 bg-gradient-to-r from-purple-600/10 to-violet-600/10 rounded-xl border border-purple-500/30">
+                    <div className="flex items-start gap-3">
+                      <Key className="w-6 h-6 text-purple-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="text-white font-medium mb-1">自定义快捷键</h4>
+                        <p className="text-purple-300 text-sm">高级用户可以在配置文件中自定义更多快捷键</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === '性能设置' && (
+                <div className="space-y-6">
+                  <SettingItem
+                    title="低功耗模式"
+                    description="降低性能以节省电量"
+                    checked={performanceSettings.lowPowerMode}
+                    onChange={(checked) => setPerformanceSettings({ ...performanceSettings, lowPowerMode: checked })}
+                  />
+                  <SettingItem
+                    title="自动优化"
+                    description="自动优化脚本执行性能"
+                    checked={performanceSettings.autoOptimization}
+                    onChange={(checked) => setPerformanceSettings({ ...performanceSettings, autoOptimization: checked })}
+                  />
+                  <SettingItem
+                    title="后台更新"
+                    description="允许在后台检查更新"
+                    checked={performanceSettings.backgroundUpdate}
+                    onChange={(checked) => setPerformanceSettings({ ...performanceSettings, backgroundUpdate: checked })}
+                  />
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-white font-medium">缓存大小</h3>
+                        <p className="text-purple-300 text-sm">设置本地缓存空间大小</p>
+                      </div>
+                      <select 
+                        value={performanceSettings.cacheSize}
+                        onChange={(e) => setPerformanceSettings({ ...performanceSettings, cacheSize: e.target.value })}
+                        className="bg-black/30 border border-purple-500/30 rounded-lg px-4 py-2 text-white"
+                      >
+                        <option>256MB</option>
+                        <option>500MB</option>
+                        <option>1GB</option>
+                        <option>2GB</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h3 className="text-white font-medium mb-4">系统资源</h3>
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-purple-300">CPU 使用率</span>
+                          <span className="text-white">23%</span>
+                        </div>
+                        <div className="h-2 bg-black/50 rounded-full overflow-hidden">
+                          <div className="h-full w-[23%] bg-gradient-to-r from-purple-500 to-violet-500 rounded-full" />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-purple-300">内存使用</span>
+                          <span className="text-white">62%</span>
+                        </div>
+                        <div className="h-2 bg-black/50 rounded-full overflow-hidden">
+                          <div className="h-full w-[62%] bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-purple-300">运行时间</span>
+                        <span className="text-white">02:34:15</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === '网络设置' && (
+                <div className="space-y-6">
+                  <SettingItem
+                    title="自动连接"
+                    description="启动时自动连接服务器"
+                    checked={networkSettings.autoConnect}
+                    onChange={(checked) => setNetworkSettings({ ...networkSettings, autoConnect: checked })}
+                  />
+                  <SettingItem
+                    title="使用代理"
+                    description="通过代理服务器连接"
+                    checked={networkSettings.proxy}
+                    onChange={(checked) => setNetworkSettings({ ...networkSettings, proxy: checked })}
+                  />
+                  {networkSettings.proxy && (
+                    <div className="space-y-4 p-4 bg-black/20 rounded-xl border border-purple-500/20">
+                      <div>
+                        <label className="text-purple-300 text-sm mb-2 block">代理地址</label>
+                        <input
+                          type="text"
+                          value={networkSettings.proxyAddress}
+                          onChange={(e) => setNetworkSettings({ ...networkSettings, proxyAddress: e.target.value })}
+                          placeholder="127.0.0.1:8080"
+                          className="w-full bg-black/30 border border-purple-500/30 rounded-lg px-4 py-3 text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-500"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-white font-medium">DNS 设置</h3>
+                        <p className="text-purple-300 text-sm">选择 DNS 服务器</p>
+                      </div>
+                      <select 
+                        value={networkSettings.dns}
+                        onChange={(e) => setNetworkSettings({ ...networkSettings, dns: e.target.value })}
+                        className="bg-black/30 border border-purple-500/30 rounded-lg px-4 py-2 text-white"
+                      >
+                        <option>自动</option>
+                        <option>Google DNS</option>
+                        <option>Cloudflare</option>
+                        <option>自定义</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h3 className="text-white font-medium mb-4">连接状态</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300 flex items-center gap-2">
+                          <Wifi size={16} /> 网络状态
+                        </span>
+                        <span className="text-green-400 font-medium flex items-center gap-2">
+                          <CheckCircle2 size={16} /> 已连接
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300">延迟</span>
+                        <span className="text-white">23ms</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-300">服务器</span>
+                        <span className="text-white">Asia (Singapore)</span>
                       </div>
                     </div>
                   </div>
@@ -277,25 +611,24 @@ const SettingsPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
 
-              {![
-                '通用设置',
-                '安全防护',
-                '界面主题',
-                '帮助支持',
-              ].includes(activeSection) && (
-                <div className="text-center py-12">
-                  <div className="w-24 h-24 bg-gradient-to-br from-purple-600/20 to-violet-600/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                    <SettingsIcon className="w-12 h-12 text-purple-400" />
+                  <div className="p-6 bg-black/20 rounded-xl border border-purple-500/20">
+                    <h3 className="text-white font-bold mb-4">常见问题</h3>
+                    <div className="space-y-3">
+                      <div className="p-4 bg-black/30 rounded-lg">
+                        <h4 className="text-white font-medium mb-2">如何开始使用？</h4>
+                        <p className="text-purple-300 text-sm">访问脚本库，选择您需要的脚本，一键复制后在执行器中运行即可。</p>
+                      </div>
+                      <div className="p-4 bg-black/30 rounded-lg">
+                        <h4 className="text-white font-medium mb-2">脚本安全吗？</h4>
+                        <p className="text-purple-300 text-sm">所有脚本都经过我们团队的安全检测，确保安全无病毒。</p>
+                      </div>
+                      <div className="p-4 bg-black/30 rounded-lg">
+                        <h4 className="text-white font-medium mb-2">如何获取帮助？</h4>
+                        <p className="text-purple-300 text-sm">加入我们的 Telegram 社区，与其他用户交流或联系客服。</p>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    更多功能即将上线
-                  </h3>
-                  <p className="text-purple-300">
-                    此设置页面正在开发中，敬请期待
-                  </p>
                 </div>
               )}
             </GlassCard>
